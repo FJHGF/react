@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 // 간단한 회원가입 폼
 // 이름, 생년월일, 국적, 자기소개
-const Resiter = () => {
+const Regiter = () => {
   // const [name, setName] = useState("");
   // const [birth, setBirth] = useState("");
   // const [country, setCountry] = useState("");
@@ -15,8 +15,17 @@ const Resiter = () => {
     bio: "",
   });
   // console.log(input);
+  const countRefObj = useRef(0);
+  const inputRef = useRef();
+  // console.log(countRefObj.current, "랜더링");
+
+  let count = 0;
   const onChange = (e) => {
-    console.log(e.target.name, e.target.value);
+    // countRefObj.current++;
+    count++; // 1로 고정되어있음 > Regiter 컴포넌트가 렌더링되면서 0으로 초기화 > 계속 1이 됌
+    console.log(count, "랜더링");
+    // console.log(countRefObj.current, "랜더링");
+    // console.log(e.target.name, e.target.value);
     setInput({
       ...input,
       [e.target.name]: e.target.value, // name 속성값을 key로 사용
@@ -52,10 +61,27 @@ const Resiter = () => {
   //   });
   // };
 
+  const onSubmit = () => {
+    if (input.name === "") {
+      //이름을 입력하는 DOM 요소 포커스
+      // console.log(inputRef.current);
+      inputRef.current.focus();
+    }
+  };
   return (
     <div>
+      {/* <button
+        onClick={() => {
+          refObj.current++;
+          console.log(refObj.current);
+        }}
+      >
+        {" "}
+        ref+1
+      </button> */}
       <div>
         <input
+          ref={inputRef}
           name="name"
           value={input.name}
           onChange={onChange}
@@ -82,7 +108,8 @@ const Resiter = () => {
       <div>
         <textarea name="bio" value={input.bio} onChange={onChange}></textarea>
       </div>
+      <button onClick={onSubmit}>제출</button>
     </div>
   );
 };
-export default Resiter;
+export default Regiter;
