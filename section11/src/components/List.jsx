@@ -1,8 +1,10 @@
 import "./List.css";
 import TodoItem from "./TodoItem";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useContext } from "react";
+import { TodoStateContext } from "../App";
+const List = () => {
+  const { todos } = useContext(TodoStateContext);
 
-const List = ({ todos, onUpdate, onDelete }) => {
   const [search, setSearch] = useState("");
 
   const onChangeSearch = (e) => {
@@ -19,18 +21,13 @@ const List = ({ todos, onUpdate, onDelete }) => {
   };
 
   const filteredTodos = getFilteredData();
-  // const getAnalyzeData = () => {};
 
   const { totalCount, doneCount, notDoneCount } = useMemo(() => {
-    // console.log("호출");
     const totalCount = todos.length;
     const doneCount = todos.filter((todo) => todo.isDone).length;
     const notDoneCount = totalCount - doneCount;
     return { totalCount, doneCount, notDoneCount };
   }, [todos]);
-  // 의존성 배열, deps
-
-  // const { totalCount, doneCount, notDoneCount } = getAnalyzeData();
 
   return (
     <div className="List">
@@ -47,14 +44,7 @@ const List = ({ todos, onUpdate, onDelete }) => {
       />
       <div className="todos_wrapper"></div>
       {filteredTodos.map((todo) => {
-        return (
-          <TodoItem
-            key={todo.id}
-            {...todo}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
-        );
+        return <TodoItem key={todo.id} {...todo} />;
       })}
     </div>
   );

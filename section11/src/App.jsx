@@ -2,8 +2,14 @@ import "./App.css";
 import Header from "./components/Header";
 import Editor from "./components/Editor";
 import List from "./components/List";
-import { useState, useRef, useReducer, useCallback } from "react";
-// import Exam from "./components/Exam";
+import {
+  useState,
+  useRef,
+  useReducer,
+  useCallback,
+  createContext,
+  useMemo,
+} from "react";
 
 const mockData = [
   {
@@ -25,6 +31,9 @@ const mockData = [
     date: new Date().getTime(),
   },
 ];
+export const TodoStateContext = createContext();
+export const TodoDispatchContext = createContext(); // 보통 외부에 선언함
+// console.log(TodoContext); // provider가 가장 중요
 
 function reducer(state, action) {
   switch (action.type) {
@@ -72,13 +81,25 @@ function App() {
       targetId: targetId,
     });
   }, []);
+
+  const memoizedDipatch = useMemo(() => {
+    return { onCreate, onUpdate, onDelete };
+  }, []);
+
   return (
     <>
       <div className="App">
-        {/* <Exam /> */}
         <Header />
-        <Editor onCreate={onCreate} />
-        <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
+        <TodoStateContext.Provider
+          value={{
+            todos,
+          }}
+        >
+          <TodoDispatchContext.Provider value={memoizedDipatch}>
+            <Editor />
+            <List />
+          </TodoDispatchContext.Provider>
+        </TodoStateContext.Provider>
       </div>
     </>
   );
