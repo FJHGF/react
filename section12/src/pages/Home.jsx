@@ -4,6 +4,7 @@ import { DiaryStateContext } from "../App";
 import Header from "../components/Header";
 import Button from "../components/Button";
 import DiaryList from "../components/DiaryList";
+import usePageTitle from "../hoocks/usePageTitle";
 
 const getMonthlyDate = (pivotDate, data) => {
   const beginTime = new Date(
@@ -30,6 +31,8 @@ const getMonthlyDate = (pivotDate, data) => {
 };
 
 const Home = () => {
+  usePageTitle("감정 일기장");
+
   const data = useContext(DiaryStateContext);
   const [pivotDate, setPivotDate] = useState(new Date());
 

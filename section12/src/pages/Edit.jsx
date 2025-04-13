@@ -5,12 +5,14 @@ import Editor from "../components/Editor";
 import { useContext } from "react";
 import { DiaryDispatchContext, DiaryStateContext } from "../App";
 import useDiary from "../hoocks/useDiary";
+import usePageTitle from "../hoocks/usePageTitle";
 
 const Edit = () => {
   const params = useParams();
   const nav = useNavigate();
   const { onDelete, onUpdate } = useContext(DiaryDispatchContext);
   const curDiaryItem = useDiary(params.id);
+  usePageTitle(`${params.id}번 읽기 수정`);
 
   const onClickDelete = () => {
     if (window.confirm("일기를 정말 삭제할까요?")) {
