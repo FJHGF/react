@@ -25,7 +25,7 @@ const mockData = [
     id: 3,
     createdDate: new Date("2025-03-13").getTime(),
     emotionId: 2,
-    content: "2번 일기 내용",
+    content: "3번 일기 내용",
   },
 ];
 
@@ -46,19 +46,29 @@ function reducer(state, action) {
 
 export const DiaryStateContext = createContext();
 export const DiaryDispatchContext = createContext();
+//
 
 function App() {
   const [data, dispatch] = useReducer(reducer, mockData);
   // 새로운 일기 추가
   const idRef = useRef(3);
 
-  const onCreate = (createDate, emotionId, content) => {
+  // localStorage.setItem("test", "hello");
+  // localStorage.setItem("person", JSON.stringify({ name: "홍길동" }));
+
+  // console.log(localStorage.getItem("test"));
+  // console.log(JSON.parse(localStorage.getItem("person")));
+  //JSON.parse(undefined) > 에러남
+
+  // localStorage.removeItem("test");
+
+  const onCreate = (createdDate, emotionId, content) => {
     // 새로운 일기를 추가하는 기능
     dispatch({
       type: "CREATE",
       data: {
         id: idRef.current++,
-        createDate,
+        createdDate,
         emotionId,
         content,
       },
@@ -66,12 +76,12 @@ function App() {
   };
 
   // 기존 일기 수정
-  const onUpdate = (id, createDate, emotionId, content) => {
+  const onUpdate = (id, createdDate, emotionId, content) => {
     dispatch({
       type: "UPDATE",
       data: {
         id,
-        createDate,
+        createdDate,
         emotionId,
         content,
       },
